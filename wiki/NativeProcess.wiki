@@ -1,9 +1,5 @@
 #summary NativeProcess is a new API present in Adobe AIR 2 that allows communication between an AIR application and native programs presents in the OS.
 
-= Introduction =
-
-NativeProcess is a new API present in Adobe AIR 2 that allows communication between an AIR application and native programs presents in the OS.
-
 
 = Further reading =
 
