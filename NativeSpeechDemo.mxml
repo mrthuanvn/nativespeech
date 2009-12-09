@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/halo"
+					   width="400" height="200" backgroundColor="#D1D1D1" showStatusBar="false"
+					   creationComplete="init()">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import fr.technolog33k.NativeSpeech;
+			import fr.technolog33k.events.NativeSpeechEvent;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.managers.CursorManager;
+			
+			private var ns:NativeSpeech;
+			
+			private function init():void
+			{
+				ns = new NativeSpeech();
+				ns.addEventListener(NativeSpeechEvent.COMMAND_ERROR, onCommandError);
+				ns.addEventListener(NativeSpeechEvent.VOICES_LOADED, onVoicesLoaded);
+				ns.addEventListener(NativeSpeechEvent.SPEECH_DONE, onSpeakDone);
+				ns.addEventListener(NativeSpeechEvent.SPEECH_ERROR, onSpeakError);
+				text.setFocus();
+			}
+			
+			private function onCommandError(e:NativeSpeechEvent):void
+			{
+				Alert.show('The executable /usr/bin/say was not found in your system.', 'Error');
+				speakBtn.enabled = true;
+				CursorManager.removeBusyCursor();
+			}
+			
+			private function onVoicesLoaded(e:NativeSpeechEvent):void
+			{
+				var voices:Array = e.data as Array;
+				var dataProvider:ArrayCollection = new ArrayCollection(voices);
+				voice.dataProvider = dataProvider;
+				voice.selectedIndex = 0;
+			}
+			
+			private function speak():void
+			{
+				if (voice.selectedIndex > -1 && text.text.length > 0) {
+					speakBtn.enabled = false;
+					CursorManager.setBusyCursor();
+					ns.say(text.text, voice.selectedItem);
+				} else {
+					Alert.show('Please give me a voice and tell me something to say.', 'Error');
+				}
+			}
+			
+			private function onSpeakDone(e:NativeSpeechEvent):void
+			{
+				speakBtn.enabled = true;
+				CursorManager.removeBusyCursor();
+			}
+			
+			private function onSpeakError(e:NativeSpeechEvent):void
+			{
+				Alert.show('The command was terminated with the following message : ' + e.data, 'Error');
+				speakBtn.enabled = true;
+				CursorManager.removeBusyCursor();
+			}
+		]]>
+	</fx:Script>
+	<s:Label x="10" y="27" text="System Voice" height="21" verticalAlign="middle" textAlign="right"/>
+	<s:DropDownList x="91" y="27" width="299" id="voice" change="text.setFocus()"/>
+	<s:Label x="11" y="64" text="Text" height="22" width="72" textAlign="right" verticalAlign="middle"/>
+	<s:TextInput x="92" y="64" width="299" id="text"/>
+	<s:Button x="320" y="121" label="Say it !" id="speakBtn" click="speak();"/>
+	<s:Label x="10" y="169" text="NativeSpeech, a simple illustration of the new NativeProcess API and the NativeApplication that follows." width="380" height="30" verticalAlign="top" textAlign="center" color="#515151"/>
+</s:WindowedApplication>

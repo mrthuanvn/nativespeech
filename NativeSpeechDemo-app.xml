@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<application xmlns="http://ns.adobe.com/air/application/2.0beta">
+
+	<id>NativeSpeech</id>
+	<filename>NativeSpeech</filename>
+	<name>NativeSpeech</name>
+	<version>1.0</version>
+	<description>This application illustrates the NativeProcess API in Adobe AIR 2.0</description>
+	<copyright>http://twitter.com/_dhaya_</copyright>
+	<supportedProfiles>extendedDesktop</supportedProfiles>
+
+	<initialWindow>
+		<content>[Cette valeur sera remplacée par Flash Builder dans le fichier app.xml de sortie]</content>
+		<title>Native Speech</title>
+		<maximizable>false</maximizable>
+		<resizable>false</resizable>
+	</initialWindow>
+
+	<icon>
+		<image16x16>icon16.png</image16x16>
+		<image32x32>icon32.png</image32x32>
+		<image48x48>icon48.png</image48x48>
+		<image128x128>icon128.png</image128x128>
+	</icon>
+</application>
