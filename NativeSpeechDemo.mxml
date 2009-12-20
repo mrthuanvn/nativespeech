@@ -25,12 +25,14 @@
 				ns.addEventListener(NativeSpeechEvent.VOICES_LOADED, onVoicesLoaded);
 				ns.addEventListener(NativeSpeechEvent.SPEECH_DONE, onSpeakDone);
 				ns.addEventListener(NativeSpeechEvent.SPEECH_ERROR, onSpeakError);
+				ns.getVoices();
 				text.setFocus();
 			}
 			
 			private function onCommandError(e:NativeSpeechEvent):void
 			{
-				Alert.show('The executable /usr/bin/say was not found in your system.', 'Error');
+				var name:String = e.data;
+				Alert.show('The executable ' + name + ' was not found in your system.', 'Error');
 				speakBtn.enabled = true;
 				CursorManager.removeBusyCursor();
 			}
@@ -46,7 +48,7 @@
 			private function speak():void
 			{
 				if (voice.selectedIndex > -1 && text.text.length > 0) {
-					speakBtn.enabled = false;
+					enabled = false;
 					CursorManager.setBusyCursor();
 					ns.say(text.text, voice.selectedItem);
 				} else {
@@ -56,14 +58,14 @@
 			
 			private function onSpeakDone(e:NativeSpeechEvent):void
 			{
-				speakBtn.enabled = true;
+				enabled = true;
 				CursorManager.removeBusyCursor();
 			}
 			
 			private function onSpeakError(e:NativeSpeechEvent):void
 			{
 				Alert.show('The command was terminated with the following message : ' + e.data, 'Error');
-				speakBtn.enabled = true;
+				enabled = true;
 				CursorManager.removeBusyCursor();
 			}
 		]]>
